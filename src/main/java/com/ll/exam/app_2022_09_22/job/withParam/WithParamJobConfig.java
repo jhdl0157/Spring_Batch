@@ -9,6 +9,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,21 +21,29 @@ public class WithParamJobConfig {
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job withParamJob() {
+    public Job withParamJob(Step withParamStep1) {
         return jobBuilderFactory.get("withParamJob")
-                .start(withParamStep1())
+                .start(withParamStep1)
                 .build();
     }
+
     @Bean
-    public Step withParamStep1() {
+    @JobScope
+    public Step withParamStep1(Tasklet withParamStep1Tasklet) {
         return stepBuilderFactory.get("withParamStep1")
-                .tasklet(withParamStep1Tasklet())
+                .tasklet(withParamStep1Tasklet)
                 .build();
     }
+
+
     @Bean
-    public Tasklet withParamStep1Tasklet() {
+    @StepScope
+    public Tasklet withParamStep1Tasklet(
+            @Value("#{jobParameters['name']}") String name,
+            @Value("#{jobParameters['age']}") int age
+    ) {
         return (contribution, chunkContext) -> {
-            System.out.println("WithParam 테스클릿 1");
+            System.out.println("WithParam 테스클릿 1, %s, %d".formatted(name, age));
 
             return RepeatStatus.FINISHED;
         };
