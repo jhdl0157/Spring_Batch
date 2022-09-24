@@ -44,6 +44,7 @@ public class WithParamJobConfig {
     ) {
         return (contribution, chunkContext) -> {
             System.out.println("WithParam 테스클릿 1, %s, %d".formatted(name, age));
+            System.out.println(chunkContext.getStepContext());
 
             return RepeatStatus.FINISHED;
         };
