@@ -1,11 +1,14 @@
 package com.ll.exam.app_2022_09_22.app.member.entity;
 
+import com.ll.exam.app_2022_09_22.app.base.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+
 
 @Entity
 @Getter
